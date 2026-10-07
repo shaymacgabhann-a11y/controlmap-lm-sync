@@ -1,0 +1,10 @@
+# ScalePad API region: us | eu | ca | au
+region: us
+
+# Which ControlMap clients to sync, and which Lifecycle Manager client each one maps to.
+# Client names differ between the two products, so the LM side is pinned by ID.
+clients:
+  - controlmap: Shamrock Woodworking
+    lifecycle_manager_id: e399db8f-634c-47be-8e8f-0f324f956a57
+    lifecycle_manager_label: Simplewood
+    enabled: true
