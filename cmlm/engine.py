@@ -14,6 +14,10 @@ log = logging.getLogger(__name__)
 DECLINED = "Declined"
 
 
+class StepsFailed(Exception):
+    pass
+
+
 @dataclass
 class ClientPair:
     controlmap_name: str
@@ -76,6 +80,8 @@ class Syncer:
             return
 
         spec = mapping.build_spec(item)
+        log.info("%s: ControlMap fields with values: %s", item["code"],
+                 ", ".join(sorted(k for k, v in item.items() if v not in (None, "", [], {}))))
 
         if entry is None:
             existing = by_code.get(item["code"])
@@ -111,15 +117,14 @@ class Syncer:
         self.stats["updated"] += 1
 
     def _apply(self, initiative_id: str, spec: mapping.InitiativeSpec, existing_budget: list[dict], created=False, currency: str | None = None) -> None:
+        """Run every update step even if some fail, then raise one error listing the failures.
+
+        The caller only records the new fingerprint on full success, so failed steps are
+        retried on the next run.
+        """
         fields = {} if created else {"name": spec.name, "executive_summary_json": spec.summary_json}
         if spec.estimated_hours:
             fields["estimated_hours"] = {"minimum": spec.estimated_hours}
-        if fields:
-            self.lm.patch(initiative_id, **fields)
-        self.lm.set_status(initiative_id, spec.status)
-        self.lm.set_priority(initiative_id, spec.priority)
-        if spec.fiscal_quarter:
-            self.lm.set_quarter(initiative_id, spec.fiscal_quarter)
 
         # Budget PUT replaces every one-time line, so keep lines people added by hand
         # and swap only the one this sync owns.
@@ -131,8 +136,26 @@ class Syncer:
                             spec.code, spec.budget_currency, currency)
             else:
                 lines.append(spec.budget_line)
+
+        steps = []
+        if fields:
+            steps.append(("details", lambda: self.lm.patch(initiative_id, **fields)))
+        steps.append(("status", lambda: self.lm.set_status(initiative_id, spec.status)))
+        steps.append(("priority", lambda: self.lm.set_priority(initiative_id, spec.priority)))
+        if spec.fiscal_quarter:
+            steps.append(("schedule", lambda: self.lm.set_quarter(initiative_id, spec.fiscal_quarter)))
         if lines != existing_budget:
-            self.lm.set_budget(initiative_id, lines)
+            steps.append(("budget", lambda: self.lm.set_budget(initiative_id, lines)))
+
+        failures = []
+        for name, step in steps:
+            try:
+                step()
+            except Exception as exc:
+                log.error("%s: %s step failed: %s", spec.code, name, exc)
+                failures.append(f"{name}: {exc}")
+        if failures:
+            raise StepsFailed(f"{len(failures)} of {len(steps)} steps failed, will retry next run: " + "; ".join(failures))
 
     def _decline(self, entry: dict, initiatives: dict, reason: str) -> None:
         if entry["initiative_id"] not in initiatives or entry.get("status") == DECLINED:

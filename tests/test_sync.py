@@ -189,6 +189,9 @@ def test_failure_after_create_is_retried_as_update_not_duplicate():
     lm = FailingScheduleLM()
     syncer, state = run([item()], lm)
     assert syncer.errors and state["items"]["cm-1:1"]["initiative_id"] == "init-1"
+    # Steps after the failed one still ran.
+    assert any(c[0] == "budget" for c in lm.calls)
+    assert state["items"]["cm-1:1"]["fingerprint"] is None
 
     lm.fail = False
     syncer, state = run([item()], lm, state)
