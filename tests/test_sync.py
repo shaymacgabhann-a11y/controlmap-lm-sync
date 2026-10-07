@@ -177,6 +177,33 @@ def test_budget_keeps_manual_lines():
     assert any(li["label"] == "ControlMap AI-1 remediation" for li in budget)
 
 
+def test_failure_after_create_is_retried_as_update_not_duplicate():
+    class FailingScheduleLM(FakeLM):
+        fail = True
+
+        def set_quarter(self, initiative_id, q):
+            if self.fail:
+                raise RuntimeError("HTTP 422")
+            super().set_quarter(initiative_id, q)
+
+    lm = FailingScheduleLM()
+    syncer, state = run([item()], lm)
+    assert syncer.errors and state["items"]["cm-1:1"]["initiative_id"] == "init-1"
+
+    lm.fail = False
+    syncer, state = run([item()], lm, state)
+    assert syncer.stats["created"] == 0 and syncer.stats["updated"] == 1
+    assert len(lm.store) == 1
+    assert state["items"]["cm-1:1"]["fingerprint"]
+
+
+def test_quarter_bounds():
+    from cmlm.platforms import quarter_bounds
+
+    assert quarter_bounds(2026, 4) == ("2026-10-01T00:00:00Z", "2026-12-31T00:00:00Z")
+    assert quarter_bounds(2028, 1) == ("2028-01-01T00:00:00Z", "2028-03-31T00:00:00Z")
+
+
 def test_does_not_recreate_initiative_deleted_in_lm():
     lm = FakeLM()
     _, state = run([item()], lm)

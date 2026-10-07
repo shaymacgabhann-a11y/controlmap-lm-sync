@@ -2,12 +2,19 @@
 
 from __future__ import annotations
 
+import calendar
 import itertools
 import logging
 
 from .api import ScalePadClient
 
 log = logging.getLogger(__name__)
+
+
+def quarter_bounds(year: int, quarter: int) -> tuple[str, str]:
+    first_month, last_month = 3 * quarter - 2, 3 * quarter
+    last_day = calendar.monthrange(year, last_month)[1]
+    return f"{year}-{first_month:02d}-01T00:00:00Z", f"{year}-{last_month:02d}-{last_day:02d}T00:00:00Z"
 
 
 class ControlMap:
@@ -62,9 +69,12 @@ class LifecycleManager:
         if not self._skip("priority", initiative_id, priority):
             self.client.put(f"/lifecycle-manager/v1/initiatives/{initiative_id}/priority", {"priority": priority})
 
-    def set_quarter(self, initiative_id: str, fiscal_quarter: dict | None) -> None:
-        body = {"fiscal_quarter": fiscal_quarter, "target_precision": "Quarter" if fiscal_quarter else None}
-        if not self._skip("schedule", initiative_id, fiscal_quarter):
+    def set_quarter(self, initiative_id: str, fiscal_quarter: dict) -> None:
+        # The API rejects fiscal_quarter alongside dates and requires both dates, so a
+        # quarter is sent as its first/last day with Quarter precision (how LM stores it).
+        start, end = quarter_bounds(fiscal_quarter["year"], fiscal_quarter["quarter"])
+        body = {"target_start_date": start, "target_end_date": end, "target_precision": "Quarter"}
+        if not self._skip("schedule", initiative_id, f"{start[:10]}..{end[:10]}"):
             self.client.put(f"/lifecycle-manager/v1/initiatives/{initiative_id}/schedule", body)
 
     def set_budget(self, initiative_id: str, line_items: list[dict]) -> None:

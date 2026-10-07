@@ -85,9 +85,12 @@ class Syncer:
             else:
                 initiative_id = self.lm.create(pair.lm_client_id, spec.name, spec.summary_json)
                 log.info("%s: created Initiative %s", item["code"], initiative_id)
+                # Record it before the follow-up calls: if one fails, the next run retries
+                # them as an update (no fingerprint) instead of creating a duplicate.
+                self.items[key] = {"initiative_id": initiative_id, "code": item["code"], "fingerprint": None}
+                self.stats["created"] += 1
                 self._apply(initiative_id, spec, existing_budget=[], created=True)
                 self._record(key, initiative_id, spec, item)
-                self.stats["created"] += 1
                 return
 
         initiative = initiatives.get(entry["initiative_id"])
