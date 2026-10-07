@@ -22,7 +22,7 @@ region: us
 clients: all
 
 # With "clients: all", skip these ControlMap clients.
-exclude: [Carbon International]
+exclude: [Carbon International, Sapphirewood]
 
 # What to do with an Initiative when its Action Item is deleted in ControlMap,
 # or moves to one of the skip_statuses below:
