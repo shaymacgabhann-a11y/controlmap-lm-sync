@@ -1,3 +1,11 @@
 {
-  "items": {}
+  "items": {
+    "e399db8f-634c-47be-8e8f-0f324f956a57:160": {
+      "cm_updated_at": "2026-09-28T21:03:39",
+      "code": "AI-1",
+      "fingerprint": "cb52af3106702424",
+      "initiative_id": "gfp10qkv",
+      "status": "InProgress"
+    }
+  }
 }
