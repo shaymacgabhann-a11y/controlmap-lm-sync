@@ -26,7 +26,7 @@ If an Initiative is deleted by hand in Lifecycle Manager, the sync logs a warnin
 | Status: Not Started → Proposed, In Progress / Review → In Progress, Completed → Completed | Status |
 | Priority: Critical / High → High, Medium → Medium, Low → Low, blank → None | Priority |
 | `planned_end_date`, else `due_date`, else `planned_start_date`, else `roadmap` (3/6/12 months from creation) | Fiscal quarter (calendar quarters) |
-| `efforts_in_hours` | Estimated hours (minimum) |
+| `effort_in_hours` | Estimated hours (minimum) |
 | `cost` | One-time investment line `ControlMap AI-12 remediation`. Other budget lines are kept, and the cost is skipped if its currency doesn't match the Initiative's |
 
 ## How duplicates are prevented

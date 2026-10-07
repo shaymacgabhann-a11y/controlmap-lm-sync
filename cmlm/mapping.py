@@ -93,7 +93,7 @@ def build_spec(item: dict, *, today: date | None = None) -> InitiativeSpec:
         status=STATUS_MAP.get(_norm(item.get("status")), "Proposed"),
         priority=PRIORITY_MAP.get(_norm(item.get("priority")), "None"),
         fiscal_quarter=target_quarter(item, today),
-        estimated_hours=_number(item.get("efforts_in_hours") or item.get("efforts")),
+        estimated_hours=_hours(item),
         budget_line=budget_line,
         budget_currency=(item.get("currency") or None) if budget_line else None,
     )
@@ -141,6 +141,15 @@ def _paragraph(text: str, *, bold: bool = False, italic: bool = False) -> dict:
     if marks:
         node["marks"] = marks
     return {"type": "paragraph", "content": [node]}
+
+
+def _hours(item: dict) -> float | None:
+    # The search API returns effort_in_hours; the create/patch docs call it efforts_in_hours.
+    for key in ("effort_in_hours", "efforts_in_hours", "efforts"):
+        hours = _number(item.get(key))
+        if hours:
+            return hours
+    return None
 
 
 def _quarter(d: date) -> dict:

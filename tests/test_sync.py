@@ -18,7 +18,7 @@ def item(**overrides):
         "corrective_action": "Enforce conditional access.",
         "priority": "Critical",
         "planned_end_date": "2026-11-15T00:00:00Z",
-        "efforts_in_hours": 6,
+        "effort_in_hours": 6,
         "cost": 1250.5,
         "currency": "USD",
         "created_at": "2026-09-01T00:00:00Z",
@@ -88,6 +88,11 @@ def test_spec_maps_fields():
     doc = json.loads(spec.summary_json)
     assert doc["type"] == "doc"
     assert "Admins can sign in without MFA." in json.dumps(doc)
+
+
+def test_hours_accepts_documented_field_name_too():
+    i = item(effort_in_hours=None, efforts_in_hours=25)
+    assert mapping.build_spec(i).estimated_hours == 25
 
 
 def test_status_and_priority_mapping():
