@@ -21,15 +21,9 @@ class ControlMap:
     def __init__(self, client: ScalePadClient):
         self.client = client
 
-    def find_client(self, name: str) -> dict | None:
-        """Look up a ControlMap client by (case-insensitive) name."""
-        rows = list(
-            self.client.paginate_get(
-                "/controlmap/v1/clients/action-items-summary",
-                {"filter[client.name]": f"eq:{name}"},
-            )
-        )
-        return rows[0]["client"] if rows else None
+    def clients(self) -> list[dict]:
+        """Every ControlMap client, with its Action Item counts under action_summary."""
+        return list(self.client.paginate_get("/controlmap/v1/clients/action-items-summary"))
 
     def action_items(self, client_id: str) -> list[dict]:
         return list(self.client.paginate_post(f"/controlmap/v1/clients/{client_id}/action-items/search"))
@@ -42,6 +36,11 @@ class LifecycleManager:
         self.client = client
         self.dry_run = dry_run
         self._fake_ids = (f"dry-run-{n}" for n in itertools.count(1))
+
+    def clients(self) -> dict[str, str]:
+        """Lifecycle Manager client id -> display name."""
+        rows = self.client.paginate_get("/lifecycle-manager/v1/clients")
+        return {r["client"]["client_id"]: r["client"]["display_name"] for r in rows}
 
     def initiatives(self, client_id: str) -> list[dict]:
         return list(
@@ -82,6 +81,10 @@ class LifecycleManager:
             self.client.put(
                 f"/lifecycle-manager/v1/initiatives/{initiative_id}/budget", {"budget_line_items": line_items}
             )
+
+    def delete(self, initiative_id: str) -> None:
+        if not self._skip("delete", initiative_id):
+            self.client.request("DELETE", f"/lifecycle-manager/v1/initiatives/{initiative_id}")
 
     def _skip(self, action: str, *detail) -> bool:
         if self.dry_run:

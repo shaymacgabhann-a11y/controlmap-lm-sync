@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import logging
 from collections import Counter
-from dataclasses import dataclass
 
 from . import mapping
+from .clients import ClientPair
 from .platforms import ControlMap, LifecycleManager
+from .settings import Settings
 
 log = logging.getLogger(__name__)
 
@@ -18,29 +19,19 @@ class StepsFailed(Exception):
     pass
 
 
-@dataclass
-class ClientPair:
-    controlmap_name: str
-    lm_client_id: str
-    lm_client_label: str = ""
-
-
 class Syncer:
-    def __init__(self, cm: ControlMap, lm: LifecycleManager, state: dict):
+    def __init__(self, cm: ControlMap, lm: LifecycleManager, state: dict, settings: Settings | None = None):
         self.cm = cm
         self.lm = lm
+        self.settings = settings or Settings()
         # state["items"]: "<cm client id>:<action item id>" -> {initiative_id, fingerprint, code, ...}
         self.items: dict = state.setdefault("items", {})
         self.stats: Counter = Counter()
         self.errors: list[str] = []
 
     def sync_client(self, pair: ClientPair) -> None:
-        cm_client = self.cm.find_client(pair.controlmap_name)
-        if not cm_client:
-            self._error(f"ControlMap client {pair.controlmap_name!r} not found")
-            return
-        cm_id = cm_client["id"]
-        log.info("Syncing ControlMap %r (%s) -> LM %s", cm_client["name"], cm_id, pair.lm_client_label or pair.lm_client_id)
+        cm_id = pair.controlmap_id
+        log.info("Syncing ControlMap %r -> Lifecycle Manager %r", pair.controlmap_name, pair.lm_client_label or pair.lm_client_id)
 
         action_items = self.cm.action_items(cm_id)
         initiatives = {i["id"]: i for i in self.lm.initiatives(pair.lm_client_id)}
@@ -57,29 +48,28 @@ class Syncer:
             try:
                 self._sync_item(key, item, pair, initiatives, by_code)
             except Exception as exc:  # keep going; one bad item shouldn't stop the run
-                self._error(f"{item.get('code', item['id'])}: {exc}")
+                self._error(f"{pair.controlmap_name} {item.get('code', item['id'])}: {exc}")
 
-        # Action Items that disappeared from ControlMap -> Declined.
+        # Action Items that disappeared from ControlMap.
         for key, entry in list(self.items.items()):
-            if not key.startswith(f"{cm_id}:") or key in seen_keys or entry.get("removed"):
+            if not key.startswith(f"{cm_id}:") or key in seen_keys or entry.get("retired"):
                 continue
             try:
-                self._decline(entry, initiatives, reason="deleted in ControlMap")
-                entry["removed"] = True
+                self._retire(key, entry, initiatives, reason="deleted in ControlMap")
             except Exception as exc:
-                self._error(f"{entry.get('code')}: {exc}")
+                self._error(f"{pair.controlmap_name} {entry.get('code')}: {exc}")
 
     def _sync_item(self, key, item, pair, initiatives, by_code) -> None:
         entry = self.items.get(key)
 
-        if mapping.is_skipped(item):
-            if entry and initiatives.get(entry["initiative_id"]) and entry.get("status") != DECLINED:
-                self._decline(entry, initiatives, reason="marked Not Applicable")
+        if mapping.is_skipped(item, self.settings.mapping):
+            if entry and entry["initiative_id"] in initiatives and not entry.get("retired"):
+                self._retire(key, entry, initiatives, reason=f"status is {item.get('status')}")
             else:
                 self.stats["skipped"] += 1
             return
 
-        spec = mapping.build_spec(item)
+        spec = mapping.build_spec(item, self.settings.mapping)
         log.info("%s: ControlMap fields with values: %s", item["code"],
                  ", ".join(sorted(k for k, v in item.items() if v not in (None, "", [], {}))))
 
@@ -157,13 +147,24 @@ class Syncer:
         if failures:
             raise StepsFailed(f"{len(failures)} of {len(steps)} steps failed, will retry next run: " + "; ".join(failures))
 
-    def _decline(self, entry: dict, initiatives: dict, reason: str) -> None:
-        if entry["initiative_id"] not in initiatives or entry.get("status") == DECLINED:
+    def _retire(self, key: str, entry: dict, initiatives: dict, reason: str) -> None:
+        """Handle an Action Item that was deleted or moved to a skipped status, per on_removed."""
+        initiative_id = entry["initiative_id"]
+        action = self.settings.on_removed
+        if initiative_id not in initiatives or action == "ignore":
+            entry["retired"] = True
+            self.stats["left_alone"] += 1
             return
-        log.info("%s: %s, setting Initiative %s to Declined", entry.get("code"), reason, entry["initiative_id"])
-        self.lm.set_status(entry["initiative_id"], DECLINED)
-        entry["status"] = DECLINED
-        entry["fingerprint"] = None  # if the item comes back, re-push everything
+        if action == "delete":
+            log.info("%s: %s, deleting Initiative %s", entry.get("code"), reason, initiative_id)
+            self.lm.delete(initiative_id)
+            # Forget it entirely, so the Action Item gets a fresh Initiative if it comes back.
+            del self.items[key]
+            self.stats["deleted"] += 1
+            return
+        log.info("%s: %s, setting Initiative %s to Declined", entry.get("code"), reason, initiative_id)
+        self.lm.set_status(initiative_id, DECLINED)
+        entry.update(status=DECLINED, retired=True, fingerprint=None)  # no fingerprint: re-push everything if it returns
         self.stats["declined"] += 1
 
     def _record(self, key: str, initiative_id: str, spec: mapping.InitiativeSpec, item: dict) -> None:

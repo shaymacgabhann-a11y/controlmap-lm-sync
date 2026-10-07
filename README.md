@@ -1,79 +1,143 @@
 # ControlMap → Lifecycle Manager sync
 
-Nightly job that turns ControlMap **Action Items** into Lifecycle Manager **Initiatives** on the matching client's roadmap, and keeps them updated.
+Turns your ControlMap **Action Items** into Lifecycle Manager **Initiatives** on each client's roadmap, and keeps them up to date every night. It runs for free on GitHub Actions; there's no server to host.
 
-## What it does
+- New Action Item → new Initiative (`AI-12 · <weakness name>`) with status, priority, quarter, hours and cost.
+- Action Item changes → the Initiative is updated.
+- Action Item deleted or marked Not Applicable → the Initiative is set to Declined (configurable).
+- Edits your team makes in Lifecycle Manager stay put until the Action Item itself changes.
 
-For each client pair in [`config.yaml`](config.yaml):
+## What you need
 
-1. Reads all Action Items for the ControlMap client.
-2. Lists the Lifecycle Manager client's Initiatives.
-3. For each Action Item:
-   - **New** → creates an Initiative named `AI-12 · <weakness name>` and sets its status, priority, quarter, hours and budget.
-   - **Changed in ControlMap** → updates the Initiative.
-   - **Unchanged** → leaves the Initiative alone, so edits made in Lifecycle Manager survive until the Action Item changes again.
-   - **Not Applicable** → skipped. If it had already been synced, its Initiative is set to Declined.
-4. Action Items deleted in ControlMap → their Initiative is set to **Declined** (never deleted).
+- ScalePad **ControlMap** and **Lifecycle Manager**.
+- A ScalePad **API key** with access to both.
+- A free **GitHub** account.
 
-If an Initiative is deleted by hand in Lifecycle Manager, the sync logs a warning and does **not** recreate it.
+## Setup (about 15 minutes, no coding)
+
+### 1. Make your own copy
+
+At the top of this page, click **Use this template → Create a new repository**. Choose your account, give it a name, and set it to **Private**: run logs show client names and Action Item titles.
+
+### 2. Add your API key
+
+In your new repository: **Settings → Secrets and variables → Actions → Secrets tab → New repository secret**.
+
+- Name: `SCALEPAD_API_KEY`
+- Secret: your ScalePad API key
+
+GitHub never shows secrets in logs, and they aren't copied to forks.
+
+### 3. See your clients
+
+Go to **Actions → Nightly sync → Run workflow**, pick **list-clients**, and click **Run workflow**. When it finishes, open the run. The summary lists every ControlMap client, how many Action Items it has, and the Lifecycle Manager client it matches.
+
+> If GitHub asks you to enable Actions on the Actions tab first, click **I understand my workflows, go ahead and enable them**.
+
+### 4. Choose clients
+
+Open `config.yaml` and click the pencil icon to edit it in GitHub. Replace the placeholder under `clients:` with one or two ControlMap client names to start with:
+
+```yaml
+clients:
+  - Contoso Ltd
+```
+
+Click **Commit changes**. Later you can widen this to `clients: all`.
+
+### 5. Do a dry run
+
+**Actions → Nightly sync → Run workflow → dry-run**. Nothing is written. The log shows each Initiative it *would* create or update, and the summary shows the totals. Check that the names, statuses and clients look right.
+
+### 6. Go live
+
+1. Run it once by hand with **live**. Open the client's roadmap in Lifecycle Manager and check the new Initiatives.
+2. To turn on the nightly schedule, go to **Settings → Secrets and variables → Actions → Variables tab → New repository variable**: name `SYNC_LIVE`, value `true`.
+
+That's it. The sync runs every night at 07:00 UTC. Until `SYNC_LIVE` is set, nightly runs are dry runs.
+
+## Configuration
+
+Everything is in [`config.yaml`](config.yaml), and each option is explained in comments there.
+
+| Setting | What it does | Default |
+|---|---|---|
+| `region` | ScalePad API region: `us`, `eu`, `ca`, `au` | `us` |
+| `clients` | `all`, or a list of ControlMap client names | placeholder |
+| `exclude` | Clients to skip when using `clients: all` | none |
+| `on_removed` | When an Action Item is deleted or skipped: `decline`, `delete` (permanent) or `ignore` | `decline` |
+| `mapping.status` | ControlMap status → Lifecycle Manager status | see file |
+| `mapping.skip_statuses` | ControlMap statuses that never get an Initiative | Not Applicable |
+| `mapping.priority` | ControlMap priority → Lifecycle Manager priority | Critical/High → High |
+
+If `config.yaml` has a mistake, the run stops immediately with a message saying what's wrong.
+
+### When client names don't match
+
+ControlMap and Lifecycle Manager share ScalePad client IDs, so clients match automatically even when their names differ. If list-clients shows *"no Lifecycle Manager client with the same ID"*, pin the client to the right one. The ID is in the client's Lifecycle Manager URL: `lm.scalepad.com/clients/<this-part>/…`
+
+```yaml
+clients:
+  - name: Contoso Ltd
+    lifecycle_manager_id: 00000000-0000-0000-0000-000000000000
+```
+
+### Changing the schedule
+
+Edit the `cron` line in [`.github/workflows/sync.yml`](.github/workflows/sync.yml). For example, `0 9 * * 1-5` runs at 09:00 UTC on weekdays ([crontab.guru](https://crontab.guru) helps).
 
 ## Field mapping
 
 | ControlMap Action Item | Lifecycle Manager Initiative |
 |---|---|
-| `code` + `weakness_name` | Name: `AI-12 · MFA not enforced` |
-| `weakness_description`, `corrective_action`, `implementation_notes` | Executive summary (with a "Synced from ControlMap" footer) |
-| Status: Not Started → Proposed, In Progress / Review → In Progress, Completed → Completed | Status |
-| Priority: Critical / High → High, Medium → Medium, Low → Low, blank → None | Priority |
-| `planned_end_date`, else `due_date`, else `planned_start_date`, else `roadmap` (3/6/12 months from creation) | Fiscal quarter (calendar quarters) |
-| `effort_in_hours` | Estimated hours (minimum) |
-| `cost` | One-time investment line `ControlMap AI-12 remediation`. Other budget lines are kept, and the cost is skipped if its currency doesn't match the Initiative's |
+| Code + weakness name | Name, e.g. `AI-12 · MFA not enforced` |
+| Weakness description, corrective action, implementation notes | Executive summary |
+| Status | Status (via `mapping.status`) |
+| Priority | Priority (via `mapping.priority`) |
+| Planned end date, else due date, else planned start date, else roadmap (3/6/12 months) | Calendar quarter on the roadmap |
+| Effort in hours | Estimated hours |
+| Cost | One-time investment line `ControlMap AI-12 remediation` (other budget lines are kept) |
 
-## How duplicates are prevented
+Action Items with no dates or roadmap appear as unscheduled Initiatives.
 
-[`state/state.json`](state/state.json) maps every Action Item to its Initiative ID plus a fingerprint of the synced fields. Live runs in GitHub Actions commit it back to the repo. If the state is ever lost, the sync re-adopts Initiatives by the `AI-12 ·` prefix in their name instead of creating new ones.
+## How it avoids duplicates
 
-## Setup
+`state/state.json` records which Initiative belongs to which Action Item. Live runs commit it back to your repository automatically. If it's ever lost, the sync recognises existing Initiatives by their `AI-12 ·` name prefix instead of creating new ones, so **don't remove the code from Initiative names**.
 
-### GitHub (nightly run)
+If someone deletes a synced Initiative in Lifecycle Manager, the sync logs it and doesn't recreate it.
 
-1. Add the API key as a repo secret named `SCALEPAD_API_KEY` (**Settings → Secrets and variables → Actions → Secrets**). The key needs ControlMap and Lifecycle Manager access.
-2. Run **Actions → Nightly sync → Run workflow** with mode `dry-run` and check the log and run summary.
-3. When the dry run looks right, run it once with mode `live`.
-4. To make the nightly schedule write for real, add a repo **variable** `SYNC_LIVE` = `true`. Until then, scheduled runs are dry runs.
+## Troubleshooting
 
-The schedule is 07:00 UTC daily (in [`.github/workflows/sync.yml`](.github/workflows/sync.yml)).
+| Symptom | Fix |
+|---|---|
+| "Add your ScalePad API key…" | Step 2: the secret must be named exactly `SCALEPAD_API_KEY`. |
+| HTTP 401 / 403 | The key is invalid or lacks ControlMap or Lifecycle Manager access. |
+| "not found in ControlMap" | Check the client name against list-clients. |
+| "Commit state" step fails | Your organisation may block Actions from pushing to `main`. Allow it under **Settings → Actions → General → Workflow permissions → Read and write**, or remove branch protection from `main`. |
+| Re-running an old run uses old settings | **Re-run jobs** repeats the original commit. Use **Run workflow** instead. |
+| Nightly runs stopped | GitHub pauses schedules in repositories with no activity for 60 days. Re-enable on the Actions tab. |
 
-### Local
+## Running locally (optional)
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt pytest
-cp .env.example .env   # then paste the key into .env
-.venv/bin/python -m cmlm                 # dry run, no writes
-.venv/bin/python -m cmlm --live          # write to Lifecycle Manager
-.venv/bin/python -m cmlm --client "Shamrock Woodworking"
+cp .env.example .env               # then paste your key into .env
+.venv/bin/python -m cmlm --list-clients
+.venv/bin/python -m cmlm           # dry run
+.venv/bin/python -m cmlm --live
 .venv/bin/pytest
 ```
 
-Local live runs update `state/state.json`. Commit it, or the next GitHub run will re-adopt those Initiatives by name, which works but is noisier.
+If you run live locally, commit `state/state.json` afterwards.
 
-## Adding a client
-
-Add an entry to `config.yaml`. Names often differ between ControlMap and Lifecycle Manager, so the Lifecycle Manager side is pinned by client ID:
-
-```yaml
-  - controlmap: Shamrock Woodworking
-    lifecycle_manager_id: e399db8f-634c-47be-8e8f-0f324f956a57
-    lifecycle_manager_label: Simplewood
-    enabled: true
-```
-
-## Layout
+## Project layout
 
 | Path | Purpose |
 |---|---|
-| `cmlm/api.py` | HTTP client: auth, pagination, retries (POSTs aren't retried on 5xx, to avoid duplicates) |
-| `cmlm/platforms.py` | ControlMap and Lifecycle Manager endpoint calls; dry-run turns writes into log lines |
+| `config.yaml` | Your settings |
+| `cmlm/settings.py` | Loads and validates `config.yaml` |
+| `cmlm/clients.py` | Matches ControlMap clients to Lifecycle Manager clients |
 | `cmlm/mapping.py` | Action Item → Initiative field translation |
-| `cmlm/engine.py` | Create / update / decline logic and state tracking |
-| `cmlm/__main__.py` | CLI entry point and GitHub run summary |
+| `cmlm/engine.py` | Create / update / retire logic and state tracking |
+| `cmlm/platforms.py` | ScalePad API calls; dry runs turn writes into log lines |
+| `cmlm/api.py` | HTTP client: auth, pagination, retries |

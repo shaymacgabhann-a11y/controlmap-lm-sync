@@ -1,11 +1,14 @@
 import json
 from datetime import date
 
-from cmlm import mapping
-from cmlm.engine import ClientPair, Syncer
+import pytest
+
+from cmlm import clients, mapping, settings
+from cmlm.clients import ClientPair
+from cmlm.engine import Syncer
 
 LM_CLIENT = "lm-1"
-PAIR = ClientPair("Shamrock Woodworking", LM_CLIENT, "Simplewood")
+PAIR = ClientPair("cm-1", "Contoso", LM_CLIENT, "Contoso Ltd")
 
 
 def item(**overrides):
@@ -29,9 +32,6 @@ def item(**overrides):
 class FakeCM:
     def __init__(self, items):
         self.items = items
-
-    def find_client(self, name):
-        return {"id": "cm-1", "name": name}
 
     def action_items(self, client_id):
         return self.items
@@ -66,10 +66,14 @@ class FakeLM:
     def set_budget(self, initiative_id, lines):
         self.calls.append(("budget", initiative_id, lines))
 
+    def delete(self, initiative_id):
+        self.store.pop(initiative_id, None)
+        self.calls.append(("delete", initiative_id))
 
-def run(items, lm, state=None):
+
+def run(items, lm, state=None, config=None):
     state = state if state is not None else {}
-    syncer = Syncer(FakeCM(items), lm, state)
+    syncer = Syncer(FakeCM(items), lm, state, settings.parse(config or {}))
     syncer.sync_client(PAIR)
     return syncer, state
 
@@ -220,3 +224,76 @@ def test_does_not_recreate_initiative_deleted_in_lm():
     syncer, _ = run([item(status="Completed")], lm, state)
     assert syncer.stats["missing_in_lm"] == 1
     assert lm.calls == []
+
+
+# --- configurable behaviour ----------------------------------------------
+
+
+def test_on_removed_delete_deletes_and_forgets():
+    lm = FakeLM()
+    _, state = run([item()], lm, config={"on_removed": "delete"})
+    syncer, state = run([], lm, state, config={"on_removed": "delete"})
+    assert syncer.stats["deleted"] == 1
+    assert ("delete", "init-1") in lm.calls
+    assert state["items"] == {}
+
+
+def test_on_removed_ignore_leaves_initiative_alone():
+    lm = FakeLM()
+    _, state = run([item()], lm, config={"on_removed": "ignore"})
+    lm.calls.clear()
+    syncer, _ = run([], lm, state, config={"on_removed": "ignore"})
+    assert syncer.stats["left_alone"] == 1
+    assert lm.calls == []
+
+
+def test_custom_status_and_priority_mapping():
+    cfg = settings.parse({"mapping": {"status": {"Not Started": "New"}, "priority": {"Critical": "High", "Low": "None"}}})
+    assert mapping.build_spec(item(), cfg.mapping).status == "New"
+    assert mapping.build_spec(item(priority="Low"), cfg.mapping).priority == "None"
+
+
+@pytest.mark.parametrize(
+    "raw, message",
+    [
+        ({"region": "mars"}, "region"),
+        ({"clients": "everyone"}, "clients must be"),
+        ({"on_removed": "archive"}, "on_removed"),
+        ({"mapping": {"status": {"Not Started": "Open"}}}, "not valid"),
+        ({"mapping": {"status": {"Started": "New"}}}, "Unknown ControlMap status"),
+    ],
+)
+def test_config_errors_are_readable(raw, message):
+    with pytest.raises(settings.ConfigError, match=message):
+        settings.parse(raw)
+
+
+# --- client matching -----------------------------------------------------
+
+CM_CLIENTS = [
+    {"client": {"id": "a", "name": "Alpha"}, "action_summary": {"total": 3}},
+    {"client": {"id": "b", "name": "Bravo"}, "action_summary": {"total": 0}},
+    {"client": {"id": "c", "name": "Charlie"}, "action_summary": {"total": 5}},
+]
+LM_CLIENTS = {"a": "Alpha Inc", "b": "Bravo LLC", "z": "Charlie Renamed"}
+
+
+def test_all_clients_match_by_shared_id_and_respect_exclude():
+    cfg = settings.parse({"clients": "all", "exclude": ["bravo"]})
+    pairs, problems = clients.resolve(cfg, CM_CLIENTS, LM_CLIENTS)
+    assert [(p.controlmap_name, p.lm_client_label) for p in pairs] == [("Alpha", "Alpha Inc")]
+    assert problems == ["Charlie: no Lifecycle Manager client with the same ID; pin one with lifecycle_manager_id"]
+
+
+def test_pinned_lm_id_and_unknown_names():
+    cfg = settings.parse({"clients": [{"name": "charlie", "lifecycle_manager_id": "z"}, "Delta"]})
+    pairs, problems = clients.resolve(cfg, CM_CLIENTS, LM_CLIENTS)
+    assert [(p.controlmap_id, p.lm_client_id) for p in pairs] == [("c", "z")]
+    assert problems == ["Delta: not found in ControlMap (check the spelling in config.yaml)"]
+
+
+def test_shipped_config_is_valid():
+    from pathlib import Path
+
+    cfg = settings.load(Path(__file__).resolve().parent.parent / "config.yaml")
+    assert cfg.on_removed == "decline" and (cfg.sync_all or cfg.clients)

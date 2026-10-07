@@ -10,23 +10,10 @@ import json
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timezone
 
+from .settings import MappingSettings
+
 NAME_SEPARATOR = " · "
 MAX_NAME_LENGTH = 200
-
-STATUS_MAP = {
-    "not started": "Proposed",
-    "in progress": "InProgress",
-    "review": "InProgress",
-    "completed": "Completed",
-}
-SKIPPED_STATUSES = {"not applicable"}
-
-PRIORITY_MAP = {
-    "critical": "High",
-    "high": "High",
-    "medium": "Medium",
-    "low": "Low",
-}
 
 ROADMAP_MONTHS = {"3 months": 3, "6 months": 6, "12 months": 12}
 
@@ -51,8 +38,9 @@ class InitiativeSpec:
         return hashlib.sha256(payload.encode()).hexdigest()[:16]
 
 
-def is_skipped(item: dict) -> bool:
-    return _norm(item.get("status")) in SKIPPED_STATUSES
+def is_skipped(item: dict, settings: MappingSettings | None = None) -> bool:
+    settings = settings or MappingSettings()
+    return _norm(item.get("status")) in settings.skip_statuses
 
 
 def item_title(item: dict) -> str:
@@ -76,7 +64,8 @@ def code_from_initiative_name(name: str) -> str | None:
     return name.split(NAME_SEPARATOR, 1)[0].strip() or None
 
 
-def build_spec(item: dict, *, today: date | None = None) -> InitiativeSpec:
+def build_spec(item: dict, settings: MappingSettings | None = None, *, today: date | None = None) -> InitiativeSpec:
+    settings = settings or MappingSettings()
     today = today or datetime.now(timezone.utc).date()
     cost = _number(item.get("cost"))
     budget_line = None
@@ -90,8 +79,8 @@ def build_spec(item: dict, *, today: date | None = None) -> InitiativeSpec:
         code=item["code"],
         name=initiative_name(item),
         summary_json=json.dumps(summary_doc(item), separators=(",", ":")),
-        status=STATUS_MAP.get(_norm(item.get("status")), "Proposed"),
-        priority=PRIORITY_MAP.get(_norm(item.get("priority")), "None"),
+        status=settings.status.get(_norm(item.get("status")), settings.default_status),
+        priority=settings.priority.get(_norm(item.get("priority")), "None"),
         fiscal_quarter=target_quarter(item, today),
         estimated_hours=_hours(item),
         budget_line=budget_line,
