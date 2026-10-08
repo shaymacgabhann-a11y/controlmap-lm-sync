@@ -1,11 +1,620 @@
 {
   "items": {
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:14": {
+      "cm_updated_at": "2026-05-12T17:51:17",
+      "code": "AI-1",
+      "fingerprint": "53b875b3fb0c6ca3",
+      "initiative_id": "bsr9z5s0",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:15": {
+      "cm_updated_at": "2026-05-12T17:51:26",
+      "code": "AI-2",
+      "fingerprint": "e9e624bea49ad627",
+      "initiative_id": "gfp1kku8",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:16": {
+      "cm_updated_at": "2026-05-12T17:51:35",
+      "code": "AI-3",
+      "fingerprint": "2a38d6cfe314dadb",
+      "initiative_id": "obq3wipv",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:17": {
+      "cm_updated_at": "2026-05-12T17:51:45",
+      "code": "AI-4",
+      "fingerprint": "8cf556a5e0b80c91",
+      "initiative_id": "y7ex6wco",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:18": {
+      "cm_updated_at": "2026-05-12T17:51:54",
+      "code": "AI-5",
+      "fingerprint": "50774936b2e066fb",
+      "initiative_id": "fgmic9y3",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:19": {
+      "cm_updated_at": "2026-05-12T17:52:04",
+      "code": "AI-6",
+      "fingerprint": "12d883df1073e239",
+      "initiative_id": "7ljuh61m",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:20": {
+      "cm_updated_at": "2026-05-12T17:52:14",
+      "code": "AI-7",
+      "fingerprint": "745eb2173ebb7df7",
+      "initiative_id": "lo80vund",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:21": {
+      "cm_updated_at": "2026-05-12T17:52:23",
+      "code": "AI-8",
+      "fingerprint": "1c6989ae0d3973fd",
+      "initiative_id": "tt2adchl",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:22": {
+      "cm_updated_at": "2026-05-12T17:52:33",
+      "code": "AI-9",
+      "fingerprint": "b6881d1b6b08888b",
+      "initiative_id": "syn541ta",
+      "status": "Proposed"
+    },
+    "029edaa3-bc0a-4386-8348-6b6b24e2a5dc:23": {
+      "cm_updated_at": "2026-05-12T17:52:43",
+      "code": "AI-10",
+      "fingerprint": "d9cfc3fda60ec5eb",
+      "initiative_id": "bsr9zh0q",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:165": {
+      "cm_updated_at": "2026-05-12T19:57:03",
+      "code": "AI-1",
+      "fingerprint": "9510b87c4d682920",
+      "initiative_id": "lo80v4fh",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:166": {
+      "cm_updated_at": "2026-05-12T19:57:20",
+      "code": "AI-2",
+      "fingerprint": "09033e8ded1c9dfb",
+      "initiative_id": "y7exaret",
+      "status": "Completed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:167": {
+      "cm_updated_at": "2026-05-12T19:57:37",
+      "code": "AI-3",
+      "fingerprint": "b340894ed11bd0bf",
+      "initiative_id": "fgmix760",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:168": {
+      "cm_updated_at": "2026-05-12T19:57:53",
+      "code": "AI-4",
+      "fingerprint": "1a119fee56dd9f50",
+      "initiative_id": "7lju52s8",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:169": {
+      "cm_updated_at": "2026-05-12T19:58:02",
+      "code": "AI-5",
+      "fingerprint": "2e3493856f0d35a3",
+      "initiative_id": "lo80ibuv",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:170": {
+      "cm_updated_at": "2026-05-12T19:58:18",
+      "code": "AI-6",
+      "fingerprint": "cd8ecdd76a34c6fa",
+      "initiative_id": "tt2a9jpo",
+      "status": "Completed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:171": {
+      "cm_updated_at": "2026-05-12T19:58:34",
+      "code": "AI-7",
+      "fingerprint": "0128f6aff37b0078",
+      "initiative_id": "syn5ufc3",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:172": {
+      "cm_updated_at": "2026-05-12T19:58:44",
+      "code": "AI-8",
+      "fingerprint": "e7701c93c1bbd74a",
+      "initiative_id": "bsr91eym",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:173": {
+      "cm_updated_at": "2026-05-12T19:59:01",
+      "code": "AI-9",
+      "fingerprint": "c90edf744ad6243a",
+      "initiative_id": "gfp10s1d",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:174": {
+      "cm_updated_at": "2026-05-12T19:59:18",
+      "code": "AI-10",
+      "fingerprint": "a9ccb573c71ada96",
+      "initiative_id": "obq33pnl",
+      "status": "Completed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:175": {
+      "cm_updated_at": "2026-05-12T19:59:35",
+      "code": "AI-11",
+      "fingerprint": "b98b6912e364925a",
+      "initiative_id": "y7exayha",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:176": {
+      "cm_updated_at": "2026-05-12T19:59:45",
+      "code": "AI-12",
+      "fingerprint": "de8e49d8c03fe269",
+      "initiative_id": "fgmixntq",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:177": {
+      "cm_updated_at": "2026-05-12T19:59:57",
+      "code": "AI-13",
+      "fingerprint": "00345a4e7c5c642b",
+      "initiative_id": "7lju5t04",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:178": {
+      "cm_updated_at": "2026-05-12T20:00:15",
+      "code": "AI-14",
+      "fingerprint": "0569e9fb980bd95f",
+      "initiative_id": "lo80i88g",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:179": {
+      "cm_updated_at": "2026-05-12T20:00:25",
+      "code": "AI-15",
+      "fingerprint": "11fd0d7c429cd928",
+      "initiative_id": "tt2a9ovx",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:180": {
+      "cm_updated_at": "2026-05-12T20:00:43",
+      "code": "AI-16",
+      "fingerprint": "4db9b0c37e6046b9",
+      "initiative_id": "syn5umor",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:181": {
+      "cm_updated_at": "2026-06-03T15:23:20",
+      "code": "AI-17",
+      "fingerprint": "81ec3eb29cccc3ad",
+      "initiative_id": "bsr91l3z",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:183": {
+      "cm_updated_at": "2026-06-24T13:16:22",
+      "code": "AI-18",
+      "fingerprint": "760f1f097ac56247",
+      "initiative_id": "gfp10qm7",
+      "status": "Completed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:184": {
+      "cm_updated_at": "2026-06-30T18:57:17",
+      "code": "AI-19",
+      "fingerprint": "5b1ea61f9a4b98d6",
+      "initiative_id": "obq33gd5",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:185": {
+      "cm_updated_at": "2026-07-03T19:11:37",
+      "code": "AI-20",
+      "fingerprint": "230663e40676ceab",
+      "initiative_id": "y7exarl2",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:186": {
+      "cm_updated_at": "2026-07-03T19:11:41",
+      "code": "AI-21",
+      "fingerprint": "c19f6392a8586619",
+      "initiative_id": "fgmix7ak",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:187": {
+      "cm_updated_at": "2026-07-03T19:11:45",
+      "code": "AI-22",
+      "fingerprint": "dd87f0a96ddefad6",
+      "initiative_id": "7lju52qb",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:188": {
+      "cm_updated_at": "2026-07-03T19:30:28",
+      "code": "AI-23",
+      "fingerprint": "3415d975b9f3d47c",
+      "initiative_id": "lo80ib4i",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:189": {
+      "cm_updated_at": "2026-07-03T19:30:32",
+      "code": "AI-24",
+      "fingerprint": "f4685b19cdf3292c",
+      "initiative_id": "tt2a9jgj",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:195": {
+      "cm_updated_at": "2026-07-17T16:55:49",
+      "code": "AI-25",
+      "fingerprint": "0a606dc0da19f902",
+      "initiative_id": "syn5ufxw",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:196": {
+      "cm_updated_at": "2026-07-21T16:24:15",
+      "code": "AI-26",
+      "fingerprint": "6dd2f55180f1f873",
+      "initiative_id": "bsr91erf",
+      "status": "InProgress"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:197": {
+      "cm_updated_at": "2026-08-04T16:18:16",
+      "code": "AI-27",
+      "fingerprint": "7e7760e5fc898513",
+      "initiative_id": "gfp10sz9",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:198": {
+      "cm_updated_at": "2026-08-04T18:59:33",
+      "code": "AI-28",
+      "fingerprint": "7157f3e47335dcad",
+      "initiative_id": "obq33p7e",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:199": {
+      "cm_updated_at": "2026-08-05T16:44:15",
+      "code": "AI-29",
+      "fingerprint": "1c516dbc36874836",
+      "initiative_id": "y7exay56",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:201": {
+      "cm_updated_at": "2026-08-19T15:19:47",
+      "code": "AI-30",
+      "fingerprint": "bf407e733be4a912",
+      "initiative_id": "fgmixn2s",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:202": {
+      "cm_updated_at": "2026-08-19T20:24:38",
+      "code": "AI-31",
+      "fingerprint": "e9506b22d7491699",
+      "initiative_id": "7lju5tku",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:203": {
+      "cm_updated_at": "2026-08-25T13:44:09",
+      "code": "AI-32",
+      "fingerprint": "7ec909e173290a0e",
+      "initiative_id": "lo80i8bp",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:204": {
+      "cm_updated_at": "2026-08-27T13:43:52",
+      "code": "AI-33",
+      "fingerprint": "a245a8a10c6d78d4",
+      "initiative_id": "tt2a9oic",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:205": {
+      "cm_updated_at": "2026-09-02T17:16:33",
+      "code": "AI-34",
+      "fingerprint": "4b437aeafeeb5a4d",
+      "initiative_id": "syn5umjy",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:206": {
+      "cm_updated_at": "2026-09-11T15:45:50",
+      "code": "AI-35",
+      "fingerprint": "7ea276919f824bbb",
+      "initiative_id": "bsr91lw1",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:207": {
+      "cm_updated_at": "2026-09-15T15:19:24",
+      "code": "AI-36",
+      "fingerprint": "2821a20960dd75a0",
+      "initiative_id": "gfp10qfn",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:208": {
+      "cm_updated_at": "2026-09-23T20:20:49",
+      "code": "AI-37",
+      "fingerprint": "dfa7a35d224adb07",
+      "initiative_id": "obq33g9h",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:209": {
+      "cm_updated_at": "2026-09-29T17:26:24",
+      "code": "AI-38",
+      "fingerprint": "524dea555012c5f3",
+      "initiative_id": "syn54z6t",
+      "status": "Proposed"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:44": {
+      "cm_updated_at": "2026-07-03T19:12:22",
+      "code": "AI-1",
+      "fingerprint": "4c5d112482a89b16",
+      "initiative_id": "tt2adc76",
+      "status": "InProgress"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:45": {
+      "cm_updated_at": "2026-07-03T19:12:25",
+      "code": "AI-2",
+      "fingerprint": "d6426f827634dbce",
+      "initiative_id": "syn5415s",
+      "status": "Proposed"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:46": {
+      "cm_updated_at": "2026-07-03T19:30:09",
+      "code": "AI-3",
+      "fingerprint": "50bcd8645b91037c",
+      "initiative_id": "bsr9zh2u",
+      "status": "InProgress"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:47": {
+      "cm_updated_at": "2026-07-03T19:30:13",
+      "code": "AI-4",
+      "fingerprint": "dbd9afa733e2c75f",
+      "initiative_id": "gfp1k0kp",
+      "status": "Proposed"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:53": {
+      "cm_updated_at": "2026-08-14T14:16:27",
+      "code": "AI-5",
+      "fingerprint": "527e4616b05de19e",
+      "initiative_id": "obq3wvbc",
+      "status": "InProgress"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:54": {
+      "cm_updated_at": "2026-08-25T19:29:06",
+      "code": "AI-6",
+      "fingerprint": "c6d401cc76ec7f95",
+      "initiative_id": "y7ex63iy",
+      "status": "Proposed"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:55": {
+      "cm_updated_at": "2026-09-14T16:34:50",
+      "code": "AI-7",
+      "fingerprint": "d723ad2cc2956bf3",
+      "initiative_id": "fgmicdj1",
+      "status": "Proposed"
+    },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:56": {
+      "cm_updated_at": "2026-09-15T15:12:45",
+      "code": "AI-8",
+      "fingerprint": "65f5feee1468890f",
+      "initiative_id": "7ljuhawn",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:10": {
+      "cm_updated_at": "2026-09-16T16:10:38",
+      "code": "AI-5",
+      "fingerprint": "9fcde9c3ec269ff1",
+      "initiative_id": "tt2adx9t",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:15": {
+      "cm_updated_at": "2026-09-16T16:56:02",
+      "code": "AI-6",
+      "fingerprint": "7a88effec7f4c91a",
+      "initiative_id": "syn54ze0",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:16": {
+      "cm_updated_at": "2026-09-16T16:56:06",
+      "code": "AI-7",
+      "fingerprint": "8ea5ddc30eea8148",
+      "initiative_id": "bsr9z568",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:17": {
+      "cm_updated_at": "2026-09-16T16:56:09",
+      "code": "AI-8",
+      "fingerprint": "1c961e4d8f2a1fff",
+      "initiative_id": "gfp1kksv",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:18": {
+      "cm_updated_at": "2026-09-16T16:56:12",
+      "code": "AI-9",
+      "fingerprint": "1bacb971d6e6c388",
+      "initiative_id": "obq3wiuo",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:19": {
+      "cm_updated_at": "2026-09-16T16:56:16",
+      "code": "AI-10",
+      "fingerprint": "a88aca99a3974341",
+      "initiative_id": "y7ex6wp3",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:20": {
+      "cm_updated_at": "2026-09-16T16:56:21",
+      "code": "AI-11",
+      "fingerprint": "77b3e1e262c40c51",
+      "initiative_id": "fgmic9cm",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:21": {
+      "cm_updated_at": "2026-09-16T16:56:24",
+      "code": "AI-12",
+      "fingerprint": "36728d0af6554360",
+      "initiative_id": "7ljuh6yd",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:22": {
+      "cm_updated_at": "2026-09-16T16:56:27",
+      "code": "AI-13",
+      "fingerprint": "24825ebb75ef7e97",
+      "initiative_id": "lo80vu1l",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:23": {
+      "cm_updated_at": "2026-09-16T16:56:31",
+      "code": "AI-14",
+      "fingerprint": "ef3a4981b20415c2",
+      "initiative_id": "tt2adcna",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:24": {
+      "cm_updated_at": "2026-09-16T16:56:34",
+      "code": "AI-15",
+      "fingerprint": "bf378edd47879252",
+      "initiative_id": "syn541hq",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:25": {
+      "cm_updated_at": "2026-09-16T16:56:38",
+      "code": "AI-16",
+      "fingerprint": "9def521eba1b32e8",
+      "initiative_id": "bsr9zht4",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:26": {
+      "cm_updated_at": "2026-09-16T16:56:42",
+      "code": "AI-17",
+      "fingerprint": "fc8644fb623969ba",
+      "initiative_id": "gfp1k00g",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:27": {
+      "cm_updated_at": "2026-09-16T16:56:45",
+      "code": "AI-18",
+      "fingerprint": "1ccffc80e1e74c34",
+      "initiative_id": "obq3wv8x",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:28": {
+      "cm_updated_at": "2026-09-16T16:56:51",
+      "code": "AI-19",
+      "fingerprint": "e7562f2e1adf97de",
+      "initiative_id": "y7ex63vr",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:29": {
+      "cm_updated_at": "2026-09-16T16:56:54",
+      "code": "AI-20",
+      "fingerprint": "52f3137290d10fe8",
+      "initiative_id": "fgmicdoz",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:30": {
+      "cm_updated_at": "2026-09-16T16:56:57",
+      "code": "AI-21",
+      "fingerprint": "eaf41be6ef384dfe",
+      "initiative_id": "7ljuha37",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:31": {
+      "cm_updated_at": "2026-09-16T16:57:00",
+      "code": "AI-22",
+      "fingerprint": "5bd3daaddc8259f5",
+      "initiative_id": "lo80v4m5",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:32": {
+      "cm_updated_at": "2026-09-16T16:57:04",
+      "code": "AI-23",
+      "fingerprint": "681f58879d999e4b",
+      "initiative_id": "tt2adxd2",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:33": {
+      "cm_updated_at": "2026-09-16T16:57:08",
+      "code": "AI-24",
+      "fingerprint": "745079651a7c59ab",
+      "initiative_id": "syn54zlk",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:34": {
+      "cm_updated_at": "2026-09-16T16:57:11",
+      "code": "AI-25",
+      "fingerprint": "e0ae27cc73fd89d1",
+      "initiative_id": "bsr9z5ab",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:35": {
+      "cm_updated_at": "2026-09-16T16:57:14",
+      "code": "AI-26",
+      "fingerprint": "52d2e09f162d0d45",
+      "initiative_id": "gfp1kkqi",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:36": {
+      "cm_updated_at": "2026-09-16T16:57:18",
+      "code": "AI-27",
+      "fingerprint": "36387c214dccbe9d",
+      "initiative_id": "obq3wi4j",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:37": {
+      "cm_updated_at": "2026-09-16T16:57:22",
+      "code": "AI-28",
+      "fingerprint": "b19b87e0df3950ef",
+      "initiative_id": "y7ex6wgw",
+      "status": "InProgress"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:38": {
+      "cm_updated_at": "2026-09-16T16:57:27",
+      "code": "AI-29",
+      "fingerprint": "d7418d31f68d3746",
+      "initiative_id": "fgmic9xf",
+      "status": "Proposed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:39": {
+      "cm_updated_at": "2026-09-16T16:57:30",
+      "code": "AI-30",
+      "fingerprint": "0d181206ea82c2fe",
+      "initiative_id": "7ljuh6r9",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:6": {
+      "cm_updated_at": "2026-09-16T16:04:34",
+      "code": "AI-1",
+      "fingerprint": "f25ae3a908145bc3",
+      "initiative_id": "tt2a9oby",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:7": {
+      "cm_updated_at": "2026-09-16T16:04:42",
+      "code": "AI-2",
+      "fingerprint": "82b983df688a9c6d",
+      "initiative_id": "syn5umi1",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:8": {
+      "cm_updated_at": "2026-09-16T16:10:18",
+      "code": "AI-3",
+      "fingerprint": "9d896634d4a3ac98",
+      "initiative_id": "bsr91ljn",
+      "status": "Completed"
+    },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:9": {
+      "cm_updated_at": "2026-09-16T16:10:28",
+      "code": "AI-4",
+      "fingerprint": "6f9b6ac5adcb4123",
+      "initiative_id": "gfp10qwh",
+      "status": "Completed"
+    },
     "e399db8f-634c-47be-8e8f-0f324f956a57:160": {
       "cm_updated_at": "2026-09-28T21:03:39",
       "code": "AI-1",
       "fingerprint": "a889dbb893d3a419",
       "initiative_id": "gfp10qkv",
       "status": "InProgress"
+    },
+    "e399db8f-634c-47be-8e8f-0f324f956a57:161": {
+      "cm_updated_at": "2026-10-07T21:22:11",
+      "code": "AI-2",
+      "fingerprint": "c985f03e9d09596b",
+      "initiative_id": "gfp1k084",
+      "status": "Proposed"
     }
   }
 }
