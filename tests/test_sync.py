@@ -305,3 +305,79 @@ def test_shipped_config_is_valid():
 
     cfg = settings.load(Path(__file__).resolve().parent.parent / "config.yaml")
     assert cfg.on_removed == "decline" and (cfg.sync_all or cfg.clients)
+
+
+# --- assignees -----------------------------------------------------------
+
+from cmlm.users import UserDirectory  # noqa: E402
+
+LM_USERS = [
+    {"user_id": "u-tulsie-demo", "first_name": "Tulsie", "last_name": "Narine", "email": "tulsie.narine+demo@scalepad.com"},
+    {"user_id": "u-tulsie-poc", "first_name": "Tulsie", "last_name": "Narine", "email": "tulsie.narine+poc@scalepad.com"},
+    {"user_id": "u-shay", "first_name": "Shay", "last_name": "Mac", "email": "shay@example.com"},
+]
+
+
+def test_resolve_by_email_then_unique_name():
+    d = UserDirectory(LM_USERS)
+    assert d.resolve({"name": "Whoever", "email": "Tulsie.Narine+POC@scalepad.com"}) == ("u-tulsie-poc", "email")
+    assert d.resolve({"name": "shay  mac", "email": "shay@other.com"}) == ("u-shay", "name")
+
+
+def test_ambiguous_name_needs_override():
+    d = UserDirectory(LM_USERS)
+    user_id, why = d.resolve({"name": "Tulsie Narine", "email": "tulsie@msp.com"})
+    assert user_id is None and "2 Lifecycle Manager users" in why
+    d = UserDirectory(LM_USERS, {"tulsie@msp.com": "tulsie.narine+demo@scalepad.com"})
+    assert d.resolve({"name": "Tulsie Narine", "email": "tulsie@msp.com"}) == ("u-tulsie-demo", "override")
+
+
+class AssigningLM(FakeLM):
+    def set_assignee(self, initiative_id, user_id):
+        self.calls.append(("assign", initiative_id, user_id))
+
+
+def run_with_users(items, lm, state=None):
+    state = state if state is not None else {}
+    syncer = Syncer(FakeCM(items), lm, state, settings.parse({}), UserDirectory(LM_USERS))
+    syncer.sync_client(PAIR)
+    return syncer, state
+
+
+def test_new_initiative_is_assigned_to_responsible_person():
+    lm = AssigningLM()
+    syncer, state = run_with_users([item(responsible_person={"name": "Tulsie Narine", "email": "tulsie.narine+demo@scalepad.com"})], lm)
+    assert ("assign", "init-1", "u-tulsie-demo") in lm.calls
+    assert state["items"]["cm-1:1"]["assigned_user_id"] == "u-tulsie-demo"
+
+
+def test_existing_unchanged_initiative_gets_assignee_without_full_update():
+    lm = AssigningLM()
+    _, state = run(  # synced before assignees existed
+        [item(responsible_person={"email": "shay@example.com"})], lm)
+    lm.calls.clear()
+    syncer, state = run_with_users([item(responsible_person={"email": "shay@example.com"})], lm, state)
+    assert syncer.stats["unchanged"] == 1
+    assert lm.calls == [("assign", "init-1", "u-shay")]
+    lm.calls.clear()
+    run_with_users([item(responsible_person={"email": "shay@example.com"})], lm, state)
+    assert lm.calls == []  # not re-pushed, so a manual reassignment in LM sticks
+
+
+def test_assignee_survives_field_updates_and_follows_controlmap_changes():
+    lm = AssigningLM()
+    person = {"email": "shay@example.com"}
+    _, state = run_with_users([item(responsible_person=person)], lm)
+    lm.calls.clear()
+    run_with_users([item(responsible_person=person, status="Review")], lm, state)
+    assert not any(c[0] == "assign" for c in lm.calls)
+    run_with_users([item(responsible_person={"email": "tulsie.narine+poc@scalepad.com"}, status="Review")], lm, state)
+    assert ("assign", "init-1", "u-tulsie-poc") in lm.calls
+
+
+def test_unmatched_person_is_reported_not_assigned():
+    lm = AssigningLM()
+    syncer, _ = run_with_users([item(responsible_person={"name": "Nobody", "email": "nobody@x.com"})], lm)
+    assert syncer.stats["assignee_unmatched"] == 1
+    assert "nobody@x.com" in syncer.unmatched_people
+    assert not any(c[0] == "assign" for c in lm.calls)
