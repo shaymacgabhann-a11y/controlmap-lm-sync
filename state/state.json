@@ -197,6 +197,7 @@
       "status": "Completed"
     },
     "acd07bc2-33e2-4123-84fa-2ea3881af475:184": {
+      "assigned_user_id": "18c3e339-d76d-4fab-aa66-539636ec5762",
       "cm_updated_at": "2026-06-30T18:57:17",
       "code": "AI-19",
       "fingerprint": "5b1ea61f9a4b98d6",
@@ -204,6 +205,7 @@
       "status": "Proposed"
     },
     "acd07bc2-33e2-4123-84fa-2ea3881af475:185": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:11:37",
       "code": "AI-20",
       "fingerprint": "230663e40676ceab",
@@ -211,6 +213,7 @@
       "status": "InProgress"
     },
     "acd07bc2-33e2-4123-84fa-2ea3881af475:186": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:11:41",
       "code": "AI-21",
       "fingerprint": "c19f6392a8586619",
@@ -218,6 +221,7 @@
       "status": "InProgress"
     },
     "acd07bc2-33e2-4123-84fa-2ea3881af475:187": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:11:45",
       "code": "AI-22",
       "fingerprint": "dd87f0a96ddefad6",
@@ -225,6 +229,7 @@
       "status": "Proposed"
     },
     "acd07bc2-33e2-4123-84fa-2ea3881af475:188": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:30:28",
       "code": "AI-23",
       "fingerprint": "3415d975b9f3d47c",
@@ -232,6 +237,7 @@
       "status": "InProgress"
     },
     "acd07bc2-33e2-4123-84fa-2ea3881af475:189": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:30:32",
       "code": "AI-24",
       "fingerprint": "f4685b19cdf3292c",
@@ -267,6 +273,7 @@
       "status": "Proposed"
     },
     "acd07bc2-33e2-4123-84fa-2ea3881af475:199": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-08-05T16:44:15",
       "code": "AI-29",
       "fingerprint": "1c516dbc36874836",
@@ -336,7 +343,16 @@
       "initiative_id": "syn54z6t",
       "status": "Proposed"
     },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:210": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-10-08T14:26:34",
+      "code": "AI-39",
+      "fingerprint": "12a4b2c38e389cba",
+      "initiative_id": "synh840i",
+      "status": "Proposed"
+    },
     "bf782d36-8fbf-4f79-876b-30a19304814a:44": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:12:22",
       "code": "AI-1",
       "fingerprint": "4c5d112482a89b16",
@@ -344,6 +360,7 @@
       "status": "InProgress"
     },
     "bf782d36-8fbf-4f79-876b-30a19304814a:45": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:12:25",
       "code": "AI-2",
       "fingerprint": "d6426f827634dbce",
@@ -351,6 +368,7 @@
       "status": "Proposed"
     },
     "bf782d36-8fbf-4f79-876b-30a19304814a:46": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:30:09",
       "code": "AI-3",
       "fingerprint": "50bcd8645b91037c",
@@ -358,6 +376,7 @@
       "status": "InProgress"
     },
     "bf782d36-8fbf-4f79-876b-30a19304814a:47": {
+      "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:30:13",
       "code": "AI-4",
       "fingerprint": "dbd9afa733e2c75f",
