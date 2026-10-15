@@ -411,6 +411,14 @@
       "initiative_id": "7ljuhawn",
       "status": "Proposed"
     },
+    "bf782d36-8fbf-4f79-876b-30a19304814a:57": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-10-14T16:16:00",
+      "code": "AI-9",
+      "fingerprint": "d8ea9079565c7a49",
+      "initiative_id": "y7ec28vl",
+      "status": "Proposed"
+    },
     "cafd5ca6-d40c-4097-a591-f58b13ef047e:10": {
       "cm_updated_at": "2026-09-16T16:10:38",
       "code": "AI-5",
