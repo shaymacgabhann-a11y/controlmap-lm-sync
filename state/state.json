@@ -351,6 +351,14 @@
       "initiative_id": "synh840i",
       "status": "Proposed"
     },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:211": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-10-16T18:29:19",
+      "code": "AI-40",
+      "fingerprint": "b459b1b5d51d1339",
+      "initiative_id": "lo80ijx5",
+      "status": "Proposed"
+    },
     "bf782d36-8fbf-4f79-876b-30a19304814a:44": {
       "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:12:22",
