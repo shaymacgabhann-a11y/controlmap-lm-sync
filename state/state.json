@@ -367,6 +367,30 @@
       "initiative_id": "gfp1kjrr",
       "status": "Proposed"
     },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:213": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-10-21T16:00:51",
+      "code": "AI-42",
+      "fingerprint": "34be787a9642d27c",
+      "initiative_id": "obq3wmw9",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:214": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-10-21T17:13:27",
+      "code": "AI-43",
+      "fingerprint": "4e3d16645efec90e",
+      "initiative_id": "y7ex6lfe",
+      "status": "Proposed"
+    },
+    "acd07bc2-33e2-4123-84fa-2ea3881af475:215": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-10-21T17:20:39",
+      "code": "AI-44",
+      "fingerprint": "71eb1e1035b8895f",
+      "initiative_id": "fgmicq96",
+      "status": "Proposed"
+    },
     "bf782d36-8fbf-4f79-876b-30a19304814a:44": {
       "assigned_user_id": "c5b11b56-daed-4695-9bc3-17f6ae72c601",
       "cm_updated_at": "2026-07-03T19:12:22",
