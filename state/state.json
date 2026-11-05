@@ -669,6 +669,14 @@
       "initiative_id": "gfp10qwh",
       "status": "Completed"
     },
+    "cafd5ca6-d40c-4097-a591-f58b13ef047e:95": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-11-04T17:49:37",
+      "code": "AI-31",
+      "fingerprint": "644e3eb79e52e63f",
+      "initiative_id": "7lo8j6xg",
+      "status": "Proposed"
+    },
     "e399db8f-634c-47be-8e8f-0f324f956a57:160": {
       "cm_updated_at": "2026-09-28T21:03:39",
       "code": "AI-1",
