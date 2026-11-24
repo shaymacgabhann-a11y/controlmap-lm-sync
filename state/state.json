@@ -698,6 +698,14 @@
       "fingerprint": "c985f03e9d09596b",
       "initiative_id": "gfp1k084",
       "status": "Proposed"
+    },
+    "e399db8f-634c-47be-8e8f-0f324f956a57:162": {
+      "assigned_user_id": null,
+      "cm_updated_at": "2026-11-24T16:22:47",
+      "code": "AI-3",
+      "fingerprint": "7050fc4d8cf7d9c5",
+      "initiative_id": "sy7e7p69",
+      "status": "Proposed"
     }
   }
 }
